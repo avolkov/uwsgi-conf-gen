@@ -1,0 +1,24 @@
+[unix_http_server]
+file=%(here)s/supervisor.sock
+
+[supervisord]
+pidfile=%(here)s/supervisord.pid
+logfile=%(here)s/logs/supervisord.log
+logfile_maxbytes=50MB
+logfile_backups=10
+loglevel=error
+nodaemon=false
+minfds=1024
+minprocs=200
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix://%(here)s/supervisor.sock
+
+[program:memcached]
+command = /usr/bin/memcached -v -p 11211 -m 256
+process_name = memcached
+stdout_logfile=%(here)s/logs/%(program_name)s_status.log
+stderr_logfile=%(here)s/logs/%(program_name)s_err.log

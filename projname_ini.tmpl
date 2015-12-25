@@ -1,0 +1,16 @@
+[uwsgi]
+
+chdir           = ${proj_dir}
+# Django's wsgi file
+module          = projname.wsgi
+
+master          = false
+# maximum number of worker processes
+processes       = 1
+# the socket (use the full path to be safe
+socket          = ${socket_dir}/${file_name}${count}.sock
+# ... with appropriate permissions - may be needed
+chmod-socket    = 666
+# clear environment on exit
+vacuum          = true
+

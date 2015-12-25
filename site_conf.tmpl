@@ -1,0 +1,28 @@
+upstream django {
+$server_block
+    least_conn;
+}
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	server_name _;
+
+
+	location /static {
+		alias ${proj_dir}/static;
+	}
+	location /media {
+		alias ${proj_dir}/static/media;
+	}
+
+	location / {
+		uwsgi_pass django;
+		include /etc/nginx/uwsgi_params;
+    proxy_set_header Host            $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+	}
+
+}
+
